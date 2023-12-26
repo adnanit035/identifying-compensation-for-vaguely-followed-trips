@@ -110,6 +110,12 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
                     "from": detour_city, "to": trip["from"],
                     "merchandise": generate_merchandise()
                 })
+
+                # Add the original trip (from the original city to the detour city)
+                actual_route["route"].append({
+                    "from": trip["from"], "to": detour_city,
+                    "merchandise": adjust_merchandise(trip["merchandise"])
+                })
             else:
                 # Add a detour trip (from the original city to the detour city)
                 actual_route["route"].append({
