@@ -1,0 +1,928 @@
+[
+    {
+        "id": "s1",
+        "route": [
+            {
+                "from": "Trento",
+                "to": "Reggio Calabria",
+                "merchandise": {
+                    "honey": 12
+                }
+            },
+            {
+                "from": "Reggio Calabria",
+                "to": "Syracuse",
+                "merchandise": {
+                    "coca-cola": 30,
+                    "pens": 45
+                }
+            },
+            {
+                "from": "Syracuse",
+                "to": "Verona",
+                "merchandise": {
+                    "coca-cola": 37,
+                    "pens": 10
+                }
+            },
+            {
+                "from": "Verona",
+                "to": "Vicenza",
+                "merchandise": {
+                    "bread": 25,
+                    "coca-cola": 1
+                }
+            },
+            {
+                "from": "Vicenza",
+                "to": "Venice",
+                "merchandise": {
+                    "coca-cola": 11,
+                    "bread": 14
+                }
+            },
+            {
+                "from": "Venice",
+                "to": "Prato",
+                "merchandise": {
+                    "butter": 23,
+                    "coca-cola": 10,
+                    "pens": 42
+                }
+            }
+        ]
+    },
+    {
+        "id": "s2",
+        "route": [
+            {
+                "from": "Piacenza",
+                "to": "Ravenna",
+                "merchandise": {
+                    "milk": 37,
+                    "honey": 28
+                }
+            },
+            {
+                "from": "Ravenna",
+                "to": "Bolzano-Bozen",
+                "merchandise": {
+                    "honey": 12,
+                    "milk": 8,
+                    "butter": 47,
+                    "tomatoes": 33
+                }
+            },
+            {
+                "from": "Bolzano-Bozen",
+                "to": "Messina",
+                "merchandise": {
+                    "butter": 6
+                }
+            },
+            {
+                "from": "Messina",
+                "to": "Cagliari",
+                "merchandise": {
+                    "milk": 9,
+                    "pens": 23,
+                    "butter": 6
+                }
+            },
+            {
+                "from": "Cagliari",
+                "to": "Palermo",
+                "merchandise": {
+                    "honey": 42,
+                    "milk": 4
+                }
+            },
+            {
+                "from": "Palermo",
+                "to": "Bologna",
+                "merchandise": {
+                    "bread": 13,
+                    "pens": 30
+                }
+            }
+        ]
+    },
+    {
+        "id": "s3",
+        "route": [
+            {
+                "from": "Rome",
+                "to": "Bolzano-Bozen",
+                "merchandise": {
+                    "bread": 19,
+                    "milk": 10,
+                    "coca-cola": 27
+                }
+            },
+            {
+                "from": "Bolzano-Bozen",
+                "to": "Cesena",
+                "merchandise": {
+                    "butter": 43
+                }
+            },
+            {
+                "from": "Cesena",
+                "to": "Bergamo",
+                "merchandise": {
+                    "butter": 19,
+                    "pens": 19,
+                    "milk": 5
+                }
+            },
+            {
+                "from": "Bergamo",
+                "to": "Latina",
+                "merchandise": {
+                    "coca-cola": 45,
+                    "butter": 41
+                }
+            },
+            {
+                "from": "Latina",
+                "to": "Perugia",
+                "merchandise": {
+                    "coca-cola": 22,
+                    "pens": 38,
+                    "milk": 31
+                }
+            }
+        ]
+    },
+    {
+        "id": "s4",
+        "route": [
+            {
+                "from": "Milan",
+                "to": "Palermo",
+                "merchandise": {
+                    "coca-cola": 39
+                }
+            },
+            {
+                "from": "Palermo",
+                "to": "Andria",
+                "merchandise": {
+                    "coca-cola": 12
+                }
+            },
+            {
+                "from": "Andria",
+                "to": "Taranto",
+                "merchandise": {
+                    "butter": 15,
+                    "coca-cola": 36
+                }
+            },
+            {
+                "from": "Taranto",
+                "to": "Verona",
+                "merchandise": {
+                    "tomatoes": 2
+                }
+            }
+        ]
+    },
+    {
+        "id": "s5",
+        "route": [
+            {
+                "from": "Parma",
+                "to": "Brescia",
+                "merchandise": {
+                    "bread": 17
+                }
+            },
+            {
+                "from": "Brescia",
+                "to": "Cagliari",
+                "merchandise": {
+                    "coca-cola": 36,
+                    "pens": 41
+                }
+            },
+            {
+                "from": "Cagliari",
+                "to": "Naples",
+                "merchandise": {
+                    "tomatoes": 1,
+                    "pens": 10,
+                    "butter": 13
+                }
+            },
+            {
+                "from": "Naples",
+                "to": "Rome",
+                "merchandise": {
+                    "pens": 13
+                }
+            }
+        ]
+    },
+    {
+        "id": "s6",
+        "route": [
+            {
+                "from": "Piacenza",
+                "to": "Catania",
+                "merchandise": {
+                    "milk": 43,
+                    "pens": 25
+                }
+            },
+            {
+                "from": "Catania",
+                "to": "Salerno",
+                "merchandise": {
+                    "pens": 45
+                }
+            },
+            {
+                "from": "Salerno",
+                "to": "Forl\u00ec",
+                "merchandise": {
+                    "honey": 7
+                }
+            },
+            {
+                "from": "Forl\u00ec",
+                "to": "Latina",
+                "merchandise": {
+                    "honey": 44,
+                    "coca-cola": 34
+                }
+            },
+            {
+                "from": "Latina",
+                "to": "Terni",
+                "merchandise": {
+                    "tomatoes": 23,
+                    "coca-cola": 22,
+                    "milk": 9
+                }
+            },
+            {
+                "from": "Terni",
+                "to": "Ancona",
+                "merchandise": {
+                    "milk": 38,
+                    "butter": 8,
+                    "honey": 14
+                }
+            },
+            {
+                "from": "Ancona",
+                "to": "Modena",
+                "merchandise": {
+                    "milk": 34,
+                    "tomatoes": 1,
+                    "butter": 49
+                }
+            }
+        ]
+    },
+    {
+        "id": "s7",
+        "route": [
+            {
+                "from": "Arezzo",
+                "to": "Rimini",
+                "merchandise": {
+                    "bread": 8,
+                    "honey": 37,
+                    "butter": 23
+                }
+            },
+            {
+                "from": "Rimini",
+                "to": "Genoa",
+                "merchandise": {
+                    "coca-cola": 27,
+                    "milk": 5,
+                    "butter": 10,
+                    "tomatoes": 43
+                }
+            },
+            {
+                "from": "Genoa",
+                "to": "Turin",
+                "merchandise": {
+                    "butter": 34
+                }
+            },
+            {
+                "from": "Turin",
+                "to": "Cagliari",
+                "merchandise": {
+                    "coca-cola": 8,
+                    "butter": 15,
+                    "honey": 23
+                }
+            },
+            {
+                "from": "Cagliari",
+                "to": "Parma",
+                "merchandise": {
+                    "milk": 26,
+                    "butter": 28
+                }
+            },
+            {
+                "from": "Parma",
+                "to": "Livorno",
+                "merchandise": {
+                    "tomatoes": 43
+                }
+            }
+        ]
+    },
+    {
+        "id": "s8",
+        "route": [
+            {
+                "from": "Ancona",
+                "to": "Arezzo",
+                "merchandise": {
+                    "milk": 19,
+                    "tomatoes": 18,
+                    "butter": 44,
+                    "bread": 34
+                }
+            },
+            {
+                "from": "Arezzo",
+                "to": "Rome",
+                "merchandise": {
+                    "honey": 20,
+                    "tomatoes": 4,
+                    "milk": 43
+                }
+            },
+            {
+                "from": "Rome",
+                "to": "Brescia",
+                "merchandise": {
+                    "honey": 29
+                }
+            }
+        ]
+    },
+    {
+        "id": "s9",
+        "route": [
+            {
+                "from": "Palermo",
+                "to": "Prato",
+                "merchandise": {
+                    "honey": 46
+                }
+            },
+            {
+                "from": "Prato",
+                "to": "Foggia",
+                "merchandise": {
+                    "tomatoes": 39,
+                    "coca-cola": 17
+                }
+            },
+            {
+                "from": "Foggia",
+                "to": "Bergamo",
+                "merchandise": {
+                    "honey": 22,
+                    "butter": 42
+                }
+            },
+            {
+                "from": "Bergamo",
+                "to": "Reggio Emilia",
+                "merchandise": {
+                    "butter": 20,
+                    "honey": 8
+                }
+            },
+            {
+                "from": "Reggio Emilia",
+                "to": "Catania",
+                "merchandise": {
+                    "milk": 11,
+                    "bread": 32,
+                    "tomatoes": 43
+                }
+            },
+            {
+                "from": "Catania",
+                "to": "Forl\u00ec",
+                "merchandise": {
+                    "tomatoes": 47,
+                    "honey": 49,
+                    "coca-cola": 13
+                }
+            },
+            {
+                "from": "Forl\u00ec",
+                "to": "Sassari",
+                "merchandise": {
+                    "honey": 27,
+                    "tomatoes": 16
+                }
+            }
+        ]
+    },
+    {
+        "id": "s10",
+        "route": [
+            {
+                "from": "Perugia",
+                "to": "Bergamo",
+                "merchandise": {
+                    "coca-cola": 5
+                }
+            },
+            {
+                "from": "Bergamo",
+                "to": "Turin",
+                "merchandise": {
+                    "pens": 40,
+                    "tomatoes": 44,
+                    "milk": 24
+                }
+            },
+            {
+                "from": "Turin",
+                "to": "Ferrara",
+                "merchandise": {
+                    "milk": 42
+                }
+            },
+            {
+                "from": "Ferrara",
+                "to": "Reggio Calabria",
+                "merchandise": {
+                    "pens": 6
+                }
+            },
+            {
+                "from": "Reggio Calabria",
+                "to": "Reggio Emilia",
+                "merchandise": {
+                    "milk": 10,
+                    "butter": 16
+                }
+            }
+        ]
+    },
+    {
+        "id": "s11",
+        "route": [
+            {
+                "from": "Terni",
+                "to": "Trento",
+                "merchandise": {
+                    "coca-cola": 2,
+                    "honey": 26,
+                    "tomatoes": 5
+                }
+            },
+            {
+                "from": "Trento",
+                "to": "Bolzano-Bozen",
+                "merchandise": {
+                    "pens": 6
+                }
+            },
+            {
+                "from": "Bolzano-Bozen",
+                "to": "Reggio Emilia",
+                "merchandise": {
+                    "coca-cola": 48,
+                    "pens": 30
+                }
+            },
+            {
+                "from": "Reggio Emilia",
+                "to": "Salerno",
+                "merchandise": {
+                    "milk": 16,
+                    "coca-cola": 15,
+                    "bread": 39
+                }
+            },
+            {
+                "from": "Salerno",
+                "to": "Ravenna",
+                "merchandise": {
+                    "tomatoes": 6,
+                    "coca-cola": 20
+                }
+            },
+            {
+                "from": "Ravenna",
+                "to": "Andria",
+                "merchandise": {
+                    "butter": 38,
+                    "tomatoes": 42,
+                    "honey": 20,
+                    "coca-cola": 45
+                }
+            }
+        ]
+    },
+    {
+        "id": "s12",
+        "route": [
+            {
+                "from": "Cagliari",
+                "to": "Ravenna",
+                "merchandise": {
+                    "pens": 29
+                }
+            },
+            {
+                "from": "Ravenna",
+                "to": "Ferrara",
+                "merchandise": {
+                    "tomatoes": 36,
+                    "milk": 11,
+                    "honey": 49
+                }
+            },
+            {
+                "from": "Ferrara",
+                "to": "Vicenza",
+                "merchandise": {
+                    "butter": 6,
+                    "honey": 7
+                }
+            },
+            {
+                "from": "Vicenza",
+                "to": "Arezzo",
+                "merchandise": {
+                    "honey": 6,
+                    "tomatoes": 43
+                }
+            }
+        ]
+    },
+    {
+        "id": "s13",
+        "route": [
+            {
+                "from": "Cesena",
+                "to": "Naples",
+                "merchandise": {
+                    "tomatoes": 44,
+                    "honey": 39,
+                    "milk": 38
+                }
+            },
+            {
+                "from": "Naples",
+                "to": "Ferrara",
+                "merchandise": {
+                    "pens": 24,
+                    "coca-cola": 36,
+                    "bread": 28
+                }
+            },
+            {
+                "from": "Ferrara",
+                "to": "Reggio Emilia",
+                "merchandise": {
+                    "honey": 17,
+                    "tomatoes": 30
+                }
+            },
+            {
+                "from": "Reggio Emilia",
+                "to": "Turin",
+                "merchandise": {
+                    "milk": 43,
+                    "pens": 29
+                }
+            },
+            {
+                "from": "Turin",
+                "to": "Arezzo",
+                "merchandise": {
+                    "pens": 45,
+                    "coca-cola": 36
+                }
+            },
+            {
+                "from": "Arezzo",
+                "to": "Cagliari",
+                "merchandise": {
+                    "butter": 50,
+                    "tomatoes": 25
+                }
+            },
+            {
+                "from": "Cagliari",
+                "to": "Rimini",
+                "merchandise": {
+                    "tomatoes": 22,
+                    "pens": 44,
+                    "bread": 18
+                }
+            }
+        ]
+    },
+    {
+        "id": "s14",
+        "route": [
+            {
+                "from": "Bergamo",
+                "to": "Andria",
+                "merchandise": {
+                    "tomatoes": 17,
+                    "milk": 24
+                }
+            },
+            {
+                "from": "Andria",
+                "to": "Taranto",
+                "merchandise": {
+                    "pens": 50,
+                    "coca-cola": 13
+                }
+            },
+            {
+                "from": "Taranto",
+                "to": "Naples",
+                "merchandise": {
+                    "tomatoes": 43,
+                    "milk": 45
+                }
+            },
+            {
+                "from": "Naples",
+                "to": "Ferrara",
+                "merchandise": {
+                    "honey": 1,
+                    "pens": 39,
+                    "butter": 36,
+                    "milk": 9
+                }
+            },
+            {
+                "from": "Ferrara",
+                "to": "Genoa",
+                "merchandise": {
+                    "tomatoes": 48,
+                    "bread": 18
+                }
+            }
+        ]
+    },
+    {
+        "id": "s15",
+        "route": [
+            {
+                "from": "Ancona",
+                "to": "Cagliari",
+                "merchandise": {
+                    "pens": 49,
+                    "tomatoes": 30,
+                    "butter": 44
+                }
+            },
+            {
+                "from": "Cagliari",
+                "to": "Reggio Emilia",
+                "merchandise": {
+                    "milk": 24,
+                    "honey": 7
+                }
+            },
+            {
+                "from": "Reggio Emilia",
+                "to": "Brescia",
+                "merchandise": {
+                    "coca-cola": 37,
+                    "milk": 35,
+                    "tomatoes": 35,
+                    "bread": 19
+                }
+            },
+            {
+                "from": "Brescia",
+                "to": "Syracuse",
+                "merchandise": {
+                    "coca-cola": 33,
+                    "pens": 7,
+                    "butter": 39
+                }
+            },
+            {
+                "from": "Syracuse",
+                "to": "Modena",
+                "merchandise": {
+                    "butter": 19,
+                    "pens": 21
+                }
+            }
+        ]
+    },
+    {
+        "id": "s16",
+        "route": [
+            {
+                "from": "Turin",
+                "to": "Vicenza",
+                "merchandise": {
+                    "coca-cola": 46,
+                    "bread": 4
+                }
+            },
+            {
+                "from": "Vicenza",
+                "to": "Latina",
+                "merchandise": {
+                    "tomatoes": 5
+                }
+            },
+            {
+                "from": "Latina",
+                "to": "Trento",
+                "merchandise": {
+                    "honey": 9,
+                    "milk": 25,
+                    "coca-cola": 42
+                }
+            }
+        ]
+    },
+    {
+        "id": "s17",
+        "route": [
+            {
+                "from": "Livorno",
+                "to": "Naples",
+                "merchandise": {
+                    "tomatoes": 11,
+                    "milk": 45,
+                    "coca-cola": 50
+                }
+            },
+            {
+                "from": "Naples",
+                "to": "Florence",
+                "merchandise": {
+                    "milk": 5
+                }
+            },
+            {
+                "from": "Florence",
+                "to": "Arezzo",
+                "merchandise": {
+                    "coca-cola": 41,
+                    "pens": 46,
+                    "honey": 41,
+                    "milk": 39
+                }
+            },
+            {
+                "from": "Arezzo",
+                "to": "Reggio Emilia",
+                "merchandise": {
+                    "tomatoes": 24
+                }
+            }
+        ]
+    },
+    {
+        "id": "s18",
+        "route": [
+            {
+                "from": "Ferrara",
+                "to": "Giugliano in Campania",
+                "merchandise": {
+                    "milk": 13,
+                    "pens": 23
+                }
+            },
+            {
+                "from": "Giugliano in Campania",
+                "to": "Latina",
+                "merchandise": {
+                    "coca-cola": 30,
+                    "milk": 5
+                }
+            },
+            {
+                "from": "Latina",
+                "to": "Turin",
+                "merchandise": {
+                    "pens": 49
+                }
+            },
+            {
+                "from": "Turin",
+                "to": "Cesena",
+                "merchandise": {
+                    "bread": 2,
+                    "pens": 25
+                }
+            }
+        ]
+    },
+    {
+        "id": "s19",
+        "route": [
+            {
+                "from": "Ferrara",
+                "to": "Verona",
+                "merchandise": {
+                    "butter": 29,
+                    "honey": 50
+                }
+            },
+            {
+                "from": "Verona",
+                "to": "Brescia",
+                "merchandise": {
+                    "honey": 50
+                }
+            },
+            {
+                "from": "Brescia",
+                "to": "Trieste",
+                "merchandise": {
+                    "butter": 45,
+                    "pens": 24,
+                    "bread": 43
+                }
+            },
+            {
+                "from": "Trieste",
+                "to": "Forl\u00ec",
+                "merchandise": {
+                    "milk": 25
+                }
+            },
+            {
+                "from": "Forl\u00ec",
+                "to": "Parma",
+                "merchandise": {
+                    "coca-cola": 43,
+                    "tomatoes": 27,
+                    "butter": 5
+                }
+            },
+            {
+                "from": "Parma",
+                "to": "Reggio Emilia",
+                "merchandise": {
+                    "coca-cola": 33
+                }
+            },
+            {
+                "from": "Reggio Emilia",
+                "to": "Sassari",
+                "merchandise": {
+                    "bread": 17
+                }
+            }
+        ]
+    },
+    {
+        "id": "s20",
+        "route": [
+            {
+                "from": "Bari",
+                "to": "Ancona",
+                "merchandise": {
+                    "coca-cola": 3,
+                    "tomatoes": 18
+                }
+            },
+            {
+                "from": "Ancona",
+                "to": "Venice",
+                "merchandise": {
+                    "honey": 40,
+                    "milk": 11,
+                    "bread": 6,
+                    "tomatoes": 19
+                }
+            },
+            {
+                "from": "Venice",
+                "to": "Milan",
+                "merchandise": {
+                    "pens": 33,
+                    "bread": 33,
+                    "coca-cola": 10,
+                    "tomatoes": 14
+                }
+            }
+        ]
+    }
+]
