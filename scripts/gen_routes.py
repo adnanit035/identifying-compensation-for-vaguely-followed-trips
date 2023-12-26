@@ -1,5 +1,3 @@
-import sys
-
 from constants import *
 import random
 
@@ -22,7 +20,7 @@ def adjust_merchandise(merchandise):
     """
     adjusted = {}
     for item, quantity in merchandise.items():
-        decision = random.choice(['increase', 'decrease', 'omit', 'keep'])  # Randomly decide what to do
+        decision = random.choice(['increase', 'decrease', 'keep'])  # Randomly decide what to do
         if decision == 'increase':
             adjusted[item] = min(quantity + random.randint(1, 5), 50)  # Capacity at 50 for max quantity
         elif decision == 'decrease' and quantity > 1:
@@ -102,20 +100,19 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
         current_route_cities.append(trip["from"])
         current_route_cities.append(trip["to"])
 
-    current_route_cities = list(set(current_route_cities))
-
     # Iterate over the trips in the standard route to create variations
     trip_count = 0
     num_of_city_variations = 0
     num_of_merch_variations = 0
 
-    action = random.choice(["omission", "addition"])
-    print(action)
+    actions_list = ["omission", "addition"]
+
+    # randomly choose an action
+    action = random.choice(actions_list)
 
     if action == "omission":
         # randomly choose a city to remove
-        selected_city_to_remove = random.choice(current_route_cities)
-
+        selected_city_to_remove = random.choice(current_route_cities[:len(current_route_cities) - 1])
         # randomly choose a new city to replace the removed city
         selected_new_city_to_replace = random.choice(
             [
@@ -166,6 +163,12 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
                         "merchandise": adjust_merchandise(trip["merchandise"])
                     })
 
+                    # Add the original trip (from the original city to the detour city)
+                    actual_route["route"].append({
+                        "from": trip["from"], "to": trip["to"],
+                        "merchandise": adjust_merchandise(trip["merchandise"])
+                    })
+
                     # increase the number of city variations
                     num_of_city_variations += 1
                 else:  # if the detour city is added after the original trip
@@ -192,7 +195,7 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
             # if not the first trip
             else:
                 # if variation limit is reached, keep the original trip
-                if num_of_city_variations > MAX_CITY_VARIATIONS:
+                if num_of_city_variations >= MAX_CITY_VARIATIONS:
                     # keep the original trip
                     actual_route["route"].append(trip)
                     continue
@@ -214,7 +217,7 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
                     # increase the number of city variations
                     num_of_city_variations += 1
                 else:  # merchandise variation
-                    if num_of_merch_variations > MAX_MERCH_VARIATIONS:
+                    if num_of_merch_variations >= MAX_MERCH_VARIATIONS:
                         # keep the original trip
                         actual_route["route"].append(trip)
                         continue
@@ -228,11 +231,7 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
                     # increase the number of merchandise variations
                     num_of_merch_variations += 1
 
-    print(standard_route_["route"])
-    print(actual_route["route"])
-
-    sys.exit(0)
-    # return actual_route
+    return actual_route
 
 
 def generate_actual_routes(standard_routes_, drivers_, min_variations_=1, max_variations_=3):
