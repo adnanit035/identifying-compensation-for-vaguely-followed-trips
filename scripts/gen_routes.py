@@ -1,3 +1,5 @@
+import sys
+
 from constants import *
 import random
 
@@ -88,54 +90,149 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
     :return: A varied actual route.
     """
     actual_route = {
-        "id": f"a{random.randint(1, 10000)}",  # Unique ID for the actual route
+        "id": f"a{random.randint(1, 100000)}",  # Unique ID for the actual route
         "driver": driver_id,
         "sroute": standard_route_["id"],
         "route": []
     }
 
-    # Iterate over the trips in the standard route to create variations
+    # get all the cities from the current standard route
+    current_route_cities = []
     for trip in standard_route_["route"]:
-        # Randomly decide to make a minor detour
-        if random.choice([True, False]):
-            # Choose a random nearby city for a detour
-            detour_city = random.choice(
-                [city for city in CITIES if city != trip["from"] and city != trip["to"]]
-            )
+        current_route_cities.append(trip["from"])
+        current_route_cities.append(trip["to"])
 
-            # add a detour city in from of the original trip or after the original trip
-            if random.choice([True, False]):
-                # Add a detour trip (from the detour city to the original city)
+    current_route_cities = list(set(current_route_cities))
+
+    # Iterate over the trips in the standard route to create variations
+    trip_count = 0
+    num_of_city_variations = 0
+    num_of_merch_variations = 0
+
+    action = random.choice(["omission", "addition"])
+    print(action)
+
+    if action == "omission":
+        # randomly choose a city to remove
+        selected_city_to_remove = random.choice(current_route_cities)
+
+        # randomly choose a new city to replace the removed city
+        selected_new_city_to_replace = random.choice(
+            [
+                city for city in CITIES
+                if city != selected_city_to_remove and city not in current_route_cities
+            ]
+        )
+        # get all the trips with selected_city_to_remove
+        trips_with_selected_city_to_remove = []
+        for trip_ in standard_route_["route"]:
+            if trip_["from"] == selected_city_to_remove or trip_["to"] == selected_city_to_remove:
+                trips_with_selected_city_to_remove.append(trip_)
+
+        # replace all the trips with selected_city_to_remove with trips with selected_new_city_to_replace
+        for trip_ in standard_route_["route"]:
+            if trip_["from"] == selected_city_to_remove:
                 actual_route["route"].append({
-                    "from": detour_city, "to": trip["from"],
-                    "merchandise": generate_merchandise()
+                    "from": selected_new_city_to_replace, "to": trip_["to"],
+                    "merchandise": adjust_merchandise(trip_["merchandise"])
                 })
-
-                # Add the original trip (from the original city to the detour city)
+            elif trip_["to"] == selected_city_to_remove:
                 actual_route["route"].append({
-                    "from": trip["from"], "to": detour_city,
-                    "merchandise": adjust_merchandise(trip["merchandise"])
+                    "from": trip_["from"], "to": selected_new_city_to_replace,
+                    "merchandise": adjust_merchandise(trip_["merchandise"])
                 })
             else:
-                # Add a detour trip (from the original city to the detour city)
-                actual_route["route"].append({
-                    "from": trip["from"], "to": detour_city,
-                    "merchandise": adjust_merchandise(trip["merchandise"])
-                })
+                # add the original trip
+                actual_route["route"].append(trip_)
+    elif action == "addition":
+        for trip in standard_route_["route"]:
+            trip_count += 1
 
-                # Add the original trip (from the detour city to the original destination)
-                actual_route["route"].append({
-                    "from": detour_city, "to": trip["to"],
-                    "merchandise": generate_merchandise()
-                })
-        else:
-            # Keep the original trip but adjust the merchandise
-            actual_route["route"].append({
-                "from": trip["from"], "to": trip["to"],
-                "merchandise": adjust_merchandise(trip["merchandise"])
-            })
+            # Choose a random nearby city for a detour
+            detour_city = random.choice(
+                [
+                    city for city in CITIES
+                    if city != trip["from"] and city != trip["to"] and city not in current_route_cities
+                ]
+            )
 
-    return actual_route
+            # if this is the first trip
+            if trip_count == 1:
+                # add a detour city in from of the original trip or after the original trip
+                if random.choice([True, False]):
+                    # Add a detour trip (from the detour city to the original city)
+                    actual_route["route"].append({
+                        "from": detour_city, "to": trip["from"],
+                        "merchandise": adjust_merchandise(trip["merchandise"])
+                    })
+
+                    # increase the number of city variations
+                    num_of_city_variations += 1
+                else:  # if the detour city is added after the original trip
+                    if random.choice([True, False]):
+                        # Add a detour trip (from the original city to the detour city)
+                        actual_route["route"].append({
+                            "from": trip["from"], "to": detour_city,
+                            "merchandise": adjust_merchandise(trip["merchandise"])
+                        })
+
+                        # Add the original trip (from the detour city to the original destination)
+                        actual_route["route"].append({
+                            "from": detour_city, "to": trip["to"],
+                            "merchandise": adjust_merchandise(trip["merchandise"])
+                        })
+
+                        # increase the number of city variations
+                        num_of_city_variations += 1
+                    else:
+                        # Keep the original trip
+                        actual_route["route"].append(trip)
+                        continue
+
+            # if not the first trip
+            else:
+                # if variation limit is reached, keep the original trip
+                if num_of_city_variations > MAX_CITY_VARIATIONS:
+                    # keep the original trip
+                    actual_route["route"].append(trip)
+                    continue
+
+                # Randomly decide to make a minor detour
+                if random.choice([True, False]):
+                    # Add a detour trip (from the original city to the detour city)
+                    actual_route["route"].append({
+                        "from": trip["from"], "to": detour_city,
+                        "merchandise": adjust_merchandise(trip["merchandise"])
+                    })
+
+                    # Add the original trip (from the detour city to the original destination)
+                    actual_route["route"].append({
+                        "from": detour_city, "to": trip["to"],
+                        "merchandise": adjust_merchandise(trip["merchandise"])
+                    })
+
+                    # increase the number of city variations
+                    num_of_city_variations += 1
+                else:  # merchandise variation
+                    if num_of_merch_variations > MAX_MERCH_VARIATIONS:
+                        # keep the original trip
+                        actual_route["route"].append(trip)
+                        continue
+
+                    # Keep the original trip but adjust the merchandise
+                    actual_route["route"].append({
+                        "from": trip["from"], "to": trip["to"],
+                        "merchandise": adjust_merchandise(trip["merchandise"])
+                    })
+
+                    # increase the number of merchandise variations
+                    num_of_merch_variations += 1
+
+    print(standard_route_["route"])
+    print(actual_route["route"])
+
+    sys.exit(0)
+    # return actual_route
 
 
 def generate_actual_routes(standard_routes_, drivers_, min_variations_=1, max_variations_=3):
