@@ -1,5 +1,27 @@
-from constants import *
 import random
+from .utils import *
+
+if not os.path.exists(CITIES_DISTANCE_MATRIX_CSV_FILE):
+    print("The distance matrix CSV file does not exist. Generating a new one...")
+    distance_matrix = gen_cities_distance_matrix()
+else:
+    distance_matrix = pd.read_csv(CITIES_DISTANCE_MATRIX_CSV_FILE, index_col=0)
+
+
+def get_closest_cities(city, num_cities=5):
+    """
+    Get the closest cities to the given city based on the distance matrix.
+
+    :param city: The city to find the closest cities to.
+    :param num_cities: Number of closest cities to return.
+    :return: A list of the closest cities.
+    """
+    closest = distance_matrix[city].nsmallest(num_cities + 1).index.tolist()
+    try:
+        closest.remove(city)  # Remove the city itself from the list
+    except ValueError:
+        pass
+    return closest
 
 
 def generate_merchandise():
@@ -31,30 +53,46 @@ def adjust_merchandise(merchandise):
     return adjusted
 
 
-def generate_connected_standard_route(min_trips_, max_trips_):
+def generate_connected_standard_route(min_trips, max_trips):
     """
-    Generate a connected route with a random number of trips within the specified constraint.
+    Generate a connected route based on the distance matrix, ensuring no city is revisited.
 
-    @param min_trips_: minimum number of trips in the route
-    @param max_trips_: maximum number of trips in the route
-
-    @return: a connected route with a random number of trips within the specified constraint
+    :param min_trips: Minimum number of trips in the route.
+    :param max_trips: Maximum number of trips in the route.
+    :return: A connected route.
     """
-    route_length = random.randint(min_trips_, max_trips_)  # Number of trips in the route
+    route_length = random.randint(min_trips, max_trips)
+    route = []
 
-    # random.sample() returns a list of unique elements, so the route is guaranteed to be connected
-    selected_cities = random.sample(CITIES, route_length + 1)  # One more city for the final destination
+    # Select random departure and destination cities
+    departure_city = random.choice(CITIES)
+    destination_city = random.choice([city for city in CITIES if city != departure_city])
 
-    # randomize the order of the CITIES
-    random.shuffle(selected_cities)
+    current_city = departure_city
+    visited_cities = [current_city]  # Initialize list of visited cities
 
-    route_ = []
-    for i in range(route_length):  # Generate a trip for each pair of CITIES
-        from_city = selected_cities[i]
-        to_city = selected_cities[i + 1]
-        route_.append({"from": from_city, "to": to_city, "merchandise": generate_merchandise()})
+    for _ in range(route_length):
+        # Get the closest cities excluding visited ones and select the next city
+        closest_cities = [city for city in get_closest_cities(current_city) if city not in visited_cities]
 
-    return route_
+        # If no unvisited closest cities are available, break the loop
+        if not closest_cities:
+            break
+
+        next_city = random.choice(closest_cities)
+        visited_cities.append(next_city)  # Update visited cities list
+
+        # Add trip to the route
+        route.append({"from": current_city, "to": next_city, "merchandise": generate_merchandise()})
+
+        # Update current city
+        current_city = next_city
+
+        # If the next city is the destination, break the loop
+        if current_city == destination_city:
+            break
+
+    return route
 
 
 def generate_standard_routes(num_routes, min_trips_, max_trips_):
@@ -100,6 +138,8 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
         current_route_cities.append(trip["from"])
         current_route_cities.append(trip["to"])
 
+    current_route_cities = list(set(current_route_cities))
+
     # Iterate over the trips in the standard route to create variations
     trip_count = 0
     num_of_city_variations = 0
@@ -113,13 +153,34 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
     if action == "omission":
         # randomly choose a city to remove
         selected_city_to_remove = random.choice(current_route_cities[:len(current_route_cities) - 1])
-        # randomly choose a new city to replace the removed city
-        selected_new_city_to_replace = random.choice(
-            [
-                city for city in CITIES
-                if city != selected_city_to_remove and city not in current_route_cities
-            ]
-        )
+
+        # to replace the removed city with a new close city, select top 3 closest cities
+        closest_cities = get_closest_cities(selected_city_to_remove, 5)
+
+        closest_cities_ = [
+            city for city in closest_cities
+            if city != selected_city_to_remove and city not in current_route_cities
+        ]
+
+        if len(closest_cities_) == 0:
+            num_of_closest_increment = 5
+            while len(closest_cities_) == 0:
+                # to replace the removed city with a new close city, select top 3 closest cities
+                closest_cities = get_closest_cities(selected_city_to_remove, num_of_closest_increment + 3)
+
+                closest_cities_ = [
+                    city for city in closest_cities
+                    if city != selected_city_to_remove and city not in current_route_cities
+                ]
+
+                num_of_closest_increment += 3
+
+            # randomly choose a new city to replace the removed city
+            selected_new_city_to_replace = random.choice(closest_cities_)
+        else:
+            # randomly choose a new city to replace the removed city
+            selected_new_city_to_replace = random.choice(closest_cities_)
+
         # get all the trips with selected_city_to_remove
         trips_with_selected_city_to_remove = []
         for trip_ in standard_route_["route"]:
@@ -145,13 +206,28 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
         for trip in standard_route_["route"]:
             trip_count += 1
 
+            # closest cities to the current trip "from" city
+            closest_cities = get_closest_cities(trip["from"], 5)
+
+            # closest cities to the current trip "to" city
+            closest_cities.extend(get_closest_cities(trip["to"], 5))
+
+            # duplicate cities are removed
+            closest_cities = list(set(closest_cities))
+
+            # remove the current trip "from" and "to" cities from the closest cities list
+            closest_cities = [
+                city for city in closest_cities
+                if city != trip["from"] and city != trip["to"] and city not in current_route_cities
+            ]
+
+            # if there are no close cities to the current trip "from" and "to" cities, keep the original trip
+            if not closest_cities:
+                actual_route["route"].append(trip)
+                continue
+
             # Choose a random nearby city for a detour
-            detour_city = random.choice(
-                [
-                    city for city in CITIES
-                    if city != trip["from"] and city != trip["to"] and city not in current_route_cities
-                ]
-            )
+            detour_city = random.choice(closest_cities)
 
             # if this is the first trip
             if trip_count == 1:
@@ -169,6 +245,9 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
                         "merchandise": adjust_merchandise(trip["merchandise"])
                     })
 
+                    # update the current route cities list with the new detour city
+                    current_route_cities.append(detour_city)
+
                     # increase the number of city variations
                     num_of_city_variations += 1
                 else:  # if the detour city is added after the original trip
@@ -184,6 +263,9 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
                             "from": detour_city, "to": trip["to"],
                             "merchandise": adjust_merchandise(trip["merchandise"])
                         })
+
+                        # update the current route cities list with the new detour city
+                        current_route_cities.append(detour_city)
 
                         # increase the number of city variations
                         num_of_city_variations += 1
@@ -213,6 +295,9 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
                         "from": detour_city, "to": trip["to"],
                         "merchandise": adjust_merchandise(trip["merchandise"])
                     })
+
+                    # update the current route cities list with the new detour city
+                    current_route_cities.append(detour_city)
 
                     # increase the number of city variations
                     num_of_city_variations += 1

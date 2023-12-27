@@ -7,33 +7,39 @@ HOME = os.path.dirname(os.path.abspath(__file__))
 # data directory
 DATA_DIR = os.path.join(HOME, "Dataset")
 
+# Italian cities database CSV file
+ITALIAN_CITIES_DB_CSV_FILE = os.path.join(DATA_DIR, "it-cities.csv")
+
+# Selected Cities Distance Matrix CSV file
+CITIES_DISTANCE_MATRIX_CSV_FILE = os.path.join(DATA_DIR, "distance-matrix.csv")
+
 # standard routes file
 STD_ROUTES_FILE = os.path.join(DATA_DIR, "standard_routes.json")
 
 # actual routes file
 ACT_ROUTES_FILE = os.path.join(DATA_DIR, "actual_routes.json")
 
-# number of standard routes
-NUM_STD_ROUTES = 20
+# number of standard routes to generate
+NUM_STD_ROUTES = 50
 
-# number of actual routes
-NUM_ACT_ROUTES = 500
+# number of actual routes to generate
+NUM_ACT_ROUTES = 300
 
 # minimum number of trips in a standard route
-MIN_TRIPS = 3
+MIN_TRIPS = 4
 
 # maximum number of trips in a standard route
-MAX_TRIPS = 7
+MAX_TRIPS = 8
 
 # List of top 50 cities in Italy (from Wikipedia)
 CITIES = [
     "Rome", "Milan", "Naples", "Turin", "Palermo", "Genoa", "Bologna", "Florence",
-    "Bari", "Catania", "Verona", "Venice", "Messina", "Padua", "Prato", "Trieste",
-    "Brescia", "Parma", "Taranto", "Modena", "Reggio Calabria", "Reggio Emilia",
+    "Bari", "Catania", "Verona", "Venice", "Messina", "Padova", "Prato", "Trieste",
+    "Brescia", "Parma", "Taranto", "Modena", "Reggio di Calabria", "Reggio Emilia",
     "Perugia", "Ravenna", "Livorno", "Rimini", "Cagliari", "Foggia", "Ferrara",
     "Salerno", "Latina", "Giugliano in Campania", "Monza", "Sassari", "Bergamo",
-    "Pescara", "Trento", "Forlì", "Syracuse", "Vicenza", "Terni", "Bolzano-Bozen",
-    "Piacenza", "Novara", "Ancona", "Udine", "Andria", "Arezzo", "Cesena"
+    "Pescara", "Trento", "Forlì", "Siracusa", "Vicenza", "Terni", "Bolzano",
+    "Piacenza", "Novara", "Ancona", "Udine"
 ]
 
 # CITIES_TO_ADD = [
@@ -57,3 +63,4 @@ MAX_CITY_VARIATIONS = 2
 
 # maximum number of merchandise variations in a trip
 MAX_MERCH_VARIATIONS = 2
+
