@@ -1,3 +1,6 @@
 .idea/
 __pycache__/
 scripts/__pycache__/
+logical_reasoning.py
+utils.py
+recStandard.json

@@ -116,21 +116,50 @@ def generate_standard_routes(num_routes, min_trips_, max_trips_):
     return standard_routes
 
 
-def create_an_actual_route_with_variation(standard_route_, driver_id):
+def create_an_actual_route_with_variation(standard_route_, driver_id, keep_same_variation=False, keep_std_route=False):
     """
     Create a variation of the standard route to form an actual route.
     Variations include minor changes in the route and merchandise.
 
     :param standard_route_: The original standard route.
     :param driver_id: The ID of the driver for the actual route.
+    :param keep_same_variation: If True, means it is not the standard route, instead it is a variation of the standard
+    route which was already created before. This is used to create multiple actual routes with the same variation for
+    the same driver (i.e. same varied route(s) probability) to simulate the real world scenario where a driver may
+    follow the same variation of a standard route multiple times. And in this case, just need return the same
+    variation of actual route with new ID. (new ID indicates a new actual route with the same variation).
+    :param keep_std_route: If True, keep the original standard route as the actual route.
     :return: A varied actual route.
     """
     actual_route = {
         "id": f"a{random.randint(1, 100000)}",  # Unique ID for the actual route
         "driver": driver_id,
-        "sroute": standard_route_["id"],
         "route": []
     }
+
+    try:
+        actual_route["sroute"] = standard_route_["sroute"]  # in case of keeping the same variation
+    except KeyError:
+        actual_route["sroute"] = standard_route_["id"]  # keeping the standard route or creating a new variation
+
+    # Iterate over the trips in the standard route to create variations
+    trip_count = 0
+    num_of_city_variations = 0
+    num_of_merch_variations = 0
+
+    if keep_same_variation or keep_std_route:
+        # add variations in the merchandise only
+        for trip in standard_route_["route"]:
+            # Keep the original trip but adjust the merchandise
+            actual_route["route"].append({
+                "from": trip["from"], "to": trip["to"],
+                "merchandise": adjust_merchandise(trip["merchandise"])
+            })
+
+            # increase the number of merchandise variations
+            num_of_merch_variations += 1
+
+        return actual_route
 
     # get all the cities from the current standard route
     current_route_cities = []
@@ -139,11 +168,6 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
         current_route_cities.append(trip["to"])
 
     current_route_cities = list(set(current_route_cities))
-
-    # Iterate over the trips in the standard route to create variations
-    trip_count = 0
-    num_of_city_variations = 0
-    num_of_merch_variations = 0
 
     actions_list = ["omission", "addition"]
 
@@ -246,7 +270,7 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
                     })
 
                     # update the current route cities list with the new detour city
-                    current_route_cities.append(detour_city)
+                    # current_route_cities.append(detour_city)
 
                     # increase the number of city variations
                     num_of_city_variations += 1
@@ -265,7 +289,7 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
                         })
 
                         # update the current route cities list with the new detour city
-                        current_route_cities.append(detour_city)
+                        # current_route_cities.append(detour_city)
 
                         # increase the number of city variations
                         num_of_city_variations += 1
@@ -277,7 +301,7 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
             # if not the first trip
             else:
                 # if variation limit is reached, keep the original trip
-                if num_of_city_variations >= MAX_CITY_VARIATIONS:
+                if num_of_city_variations >= MAX_CITY_VARIATIONS_PER_ROUTE:
                     # keep the original trip
                     actual_route["route"].append(trip)
                     continue
@@ -297,12 +321,12 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
                     })
 
                     # update the current route cities list with the new detour city
-                    current_route_cities.append(detour_city)
+                    # current_route_cities.append(detour_city)
 
                     # increase the number of city variations
                     num_of_city_variations += 1
                 else:  # merchandise variation
-                    if num_of_merch_variations >= MAX_MERCH_VARIATIONS:
+                    if num_of_merch_variations >= MAX_MERCH_VARIATIONS_PER_ROUTE:
                         # keep the original trip
                         actual_route["route"].append(trip)
                         continue
@@ -319,23 +343,71 @@ def create_an_actual_route_with_variation(standard_route_, driver_id):
     return actual_route
 
 
-def generate_actual_routes(standard_routes_, drivers_, min_variations_=1, max_variations_=3):
+def generate_actual_routes(standard_routes_, drivers_, min_variations_per_driver=1, max_variations_per_driver=3):
     """
     Generate a set of actual routes with variations from the given standard routes and drivers.
 
     :param standard_routes_: The standard routes to use.
     :param drivers_: The drivers to use.
-    :param min_variations_: The minimum number of variations for each standard route for each driver.
-    :param max_variations_: The maximum number of variations for each standard route for each driver.
+    :param min_variations_per_driver: The minimum number of variations for each standard route for each driver.
+    :param max_variations_per_driver: The maximum number of variations for each standard route for each driver.
 
     :return: A set of actual routes with variations from the given standard routes and drivers.
     """
     actual_routes = []
-    for driver_ in drivers_:
-        for standard_route_ in standard_routes_:
-            # Generate multiple variations for each standard route for each driver
-            for _ in range(random.randint(min_variations_, max_variations_)):
-                varied_route_ = create_an_actual_route_with_variation(standard_route_, driver_)
-                actual_routes.append(varied_route_)
+    assigned_drivers = []
+    for standard_route_ in standard_routes_:  # Iterate over the standard routes
+        # Select a random driver for each standard route
+        driver_ = random.choice(drivers_)
+        while driver_ in assigned_drivers:  # Ensure no driver is assigned to more than one route
+            driver_ = random.choice(drivers_)
+
+        assigned_drivers.append(driver_)  # Add the driver to the list of assigned drivers
+
+        # Generate a random number of variations for each standard route
+        num_variations = random.randint(min_variations_per_driver, max_variations_per_driver)
+
+        current_driver_actual_routes = []
+        # Generate a set of variations for the current standard route
+        for _ in range(num_variations):
+            # decide whether to keep the original standard route or not based on the probability
+            keep_std_route = random.random() < SAME_STD_ROUTE_PROB
+
+            # decide whether to keep the same variation of the standard route or not based on the probability
+            keep_same_variation = random.random() < SAME_VARIED_ROUTE_PROB
+
+            if keep_same_variation:
+                # then randomly choose a variation of the standard route from the actual_routes list for the same
+                # driver and same standard route
+                if len(current_driver_actual_routes) > 0:
+                    already_created_variation = random.choice(current_driver_actual_routes)
+                    generated_actual_route = create_an_actual_route_with_variation(
+                            already_created_variation, driver_, keep_same_variation=True, keep_std_route=False
+                        )
+                    current_driver_actual_routes.append(generated_actual_route)
+                    actual_routes.append(generated_actual_route)
+                else:
+                    # if there is no variation for the same driver and same standard route, then create a new variation
+                    # of the standard route
+                    generated_actual_route = create_an_actual_route_with_variation(
+                        standard_route_, driver_, keep_same_variation=False, keep_std_route=False
+                    )
+                    current_driver_actual_routes.append(generated_actual_route)
+                    actual_routes.append(generated_actual_route)
+                continue
+
+            if keep_std_route:
+                # keep the original standard route
+                generated_actual_route = create_an_actual_route_with_variation(
+                    standard_route_, driver_, keep_same_variation=False, keep_std_route=True
+                )
+                current_driver_actual_routes.append(generated_actual_route)
+                actual_routes.append(generated_actual_route)
+                continue
+
+            generated_actual_route = create_an_actual_route_with_variation(standard_route_, driver_)
+            current_driver_actual_routes.append(generated_actual_route)
+            # Generate a variation of the standard route
+            actual_routes.append(create_an_actual_route_with_variation(standard_route_, driver_))
 
     return actual_routes
