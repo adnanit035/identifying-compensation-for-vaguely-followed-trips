@@ -1,26 +1,4 @@
 .idea/
 __pycache__/
-scripts/__pycache__/
-logical_reasoning.py
-utils.py
-recStandard.json
-Dataset/actual_routes - Copy.json
-Dataset/standard_routes - Copy.json
-experiments-2.ipynb
-
-Dataset/20_standard_1k_variations/
-Dataset/20_standard_3k_variations/
-Dataset/50_standard_1k_variations/
-Dataset/actual_routes - Copy (2).json
-Dataset/actual_routes_clustered.csv
-Dataset/cluster_analysis.csv
-Dataset/deviation_analysis.csv
-Dataset/org-2-actual_routes.json
-Dataset/org-2-standard_routes.json
-Dataset/org_actual_routes.json
-Dataset/org_standard_routes.json
-Dataset/standard_routes - Copy (2).json
-data_processor.py
-driver_actual_routes_followed_analysis_df.csv
-temp/
-main.ipynb
+src/scripts/__pycache__/
+src/scripts/.idea/
